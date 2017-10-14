@@ -1,4 +1,5 @@
 #include "curses.h"
+#include "map.h"
 //screen goes from 0-80 across and 0-24 down Chnages between computers??
 #define MAP_WIDTH			100
 #define MAP_HEIGHT			25
@@ -12,32 +13,7 @@ int nMapArray[MAP_HEIGHT][MAP_WIDTH] = {};
 void ClrMessage(void) {
 	mvaddstr(22, 10, "                                           ");
 }
-void DrawMap(void) {
-	for (int y = 0; y < MAP_HEIGHT; y++)
-	{
-		for (int x = 0; x < MAP_WIDTH; x++)
-		{
-			// Draw the tile
-			switch (nMapArray[y][x])
-			{
-			case TILE_FLOOR:
-				//add color eventually
-				mvaddch(y, x, '.');
-				break;
-			case TILE_WALL:
-				mvaddch(y, x, '#');
-				break;
-			case TILE_OPEN_DOOR:
-				mvaddch(y, x, '+');
-				break;
-			case TILE_CLOSED_DOOR:
-				mvaddch(y, x, '-');
-				break;
-			}
-		} // end of for loop
-	} // end of for loop
 
-}
 
 bool isPassable(int x, int y) {
 	int tile = nMapArray[y][x];
@@ -75,7 +51,8 @@ int main() {
 		clear();
 		while (on == true)
 		{
-			DrawMap();
+			Map map;
+			map.DrawMap(nMapArray);
 
 			// Output phase - Draw the player to the screen
 			mvaddch(nPlayerY, nPlayerX, nPlayerch);
@@ -206,7 +183,7 @@ int main() {
 				}
 
 				ClrMessage();
-				DrawMap();
+				map.DrawMap(nMapArray);
 				break;
 				}
 
@@ -269,7 +246,7 @@ int main() {
 				}
 
 				ClrMessage();
-				DrawMap();
+				map.DrawMap(nMapArray);
 				break;
 				}
 				
@@ -332,7 +309,7 @@ int main() {
 				}
 
 				ClrMessage();
-				DrawMap();
+				map.DrawMap(nMapArray);
 				break;
 				}
 			default:
